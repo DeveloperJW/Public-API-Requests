@@ -5,6 +5,7 @@
   - This project is created for the purpose of JavaScript Full Stack TechDegree - Unit 05 with TeamTreehouse. 
   
   - The app will be deployed to GitHub pages: 
+  https://developerjw.github.io/Public-API-Requests/
   
   
   
