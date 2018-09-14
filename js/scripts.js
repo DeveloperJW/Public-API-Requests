@@ -5,6 +5,9 @@ search.innerHTML=` <form action="#" method="get">
                         <input type="search" id="search-input" class="search-input" placeholder="Search...">
                         <input type="submit" value="&#x1F50D;" id="serach-submit" class="search-submit">
                     </form>`;
+const errorMessage=document.createElement('h1');
+// errorMessage.innerText='test';
+document.querySelector("header").appendChild(errorMessage);
 
 
 //---
@@ -73,8 +76,9 @@ function resetCard() {
  * @param data
  */
 function showEmployeeModal(index, data){
-    const current = data.results[index];
+    let current = data.results[index];
     const cLocation = data.results[index].location;
+    const dob=current.dob.date;
     let modalHtml = `<div class="modal">
                     <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
                     <div class="modal-info-container">
@@ -84,8 +88,8 @@ function showEmployeeModal(index, data){
                         <p class="modal-text cap">${current.location.city}</p>
                         <hr>
                         <p class="modal-text">${current.cell}</p>
-                        <p class="modal-text">${cLocation.street}., ${cLocation.city}, ${cLocation.state} ${cLocation.postcode} </p>
-                        <p class="modal-text">Birthday: ${current.dob.date}</p>
+                        <p class="modal-text cap">${cLocation.street}, ${cLocation.city}, ${getStateAbbr(cLocation.state)} ${cLocation.postcode} </p>
+                        <p class="modal-text">Birthday: ${dob.slice(5,7)}/${dob.slice(8,10)}/${dob.slice(2,4)}</p>
                     </div>
                 </div>
             <div class="modal-btn-container">
@@ -160,16 +164,23 @@ function generateEmployee(data){
     searchButton.addEventListener('click',function (event) {
         event.preventDefault();
         resetCard();//reset div.card style before search
+        errorMessage.innerText='';//reset error message
         let searchInput=document.getElementById('search-input');
         for (let i=0; i<NUMBER_OF_EMPLOYEES;i++){
             if (data.results[i].name.first.includes(searchInput.value)
                 || data.results[i].name.last.includes(searchInput.value)){
-                console.log('There are matches');
                 showCard(i);
             } else{
                 hideCard(i);
             }
+        }//end of for loop
+        //when there is no matching records, show the message
+        searchInput.value='';//clear the search input
+        let matchCount= gallery.querySelectorAll("div.card[style*='display: none'").length;
+        if (matchCount===NUMBER_OF_EMPLOYEES){
+            errorMessage.innerText='Opps! There is no matching records.';
         }
+
 
     });
 }

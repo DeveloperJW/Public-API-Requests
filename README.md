@@ -35,3 +35,7 @@ Extra Credit:
     Add a way to toggle back and forth between employees when the modal window is open.
     
 - Structure, style and CSS
+    - in style.css: 
+        - header header h1, added font-family: "Lucida Console", Monaco, monospace;
+        - changed the font color when the previous or next button is disabled
+        - added background image 

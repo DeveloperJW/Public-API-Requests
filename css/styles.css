@@ -16,7 +16,10 @@ html, body {
 body {
     font-family: "Nunito", sans-serif;
     text-align: center;
-    background: rgba(235, 235, 235, 0.9);
+    /*background: rgba(235, 235, 235, 0.9);*/
+    background: url(../img/background-border-bright-630754.jpg) no-repeat center center fixed;
+    background-size: cover;
+
 }
 
 header {
@@ -29,9 +32,14 @@ header {
 }
 
 header h1 {
+    /*font-family: 'Lato', sans-serif;*/
+    font-family: "Lucida Console", Monaco, monospace;
     font-size: 1.25em;
-    color: rgba(50, 50, 50, 0.9);
+    /*color: rgba(50, 50, 50, 0.9);*/
+    color:black;
     margin-top: 35px;
+    background-color: #ffffff;
+    opacity: 0.6;
 }
 
 .search-input {
