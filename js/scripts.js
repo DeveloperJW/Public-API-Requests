@@ -1,5 +1,11 @@
 const gallery=document.querySelector('#gallery');
 const NUMBER_OF_EMPLOYEES=12;// set the number of employees that would be shown on each page
+const search=document.querySelector('div.search-container');
+search.innerHTML=` <form action="#" method="get">
+                        <input type="search" id="search-input" class="search-input" placeholder="Search...">
+                        <input type="submit" value="&#x1F50D;" id="serach-submit" class="search-submit">
+                    </form>`;
+
 
 //---
 //Fetch Functions
@@ -38,6 +44,28 @@ function getIndex(item){
     }
 }
 
+function closeModal(){
+    const currentDiv=document.body.lastElementChild;
+    document.body.removeChild(currentDiv);
+}
+
+function hideCard(index){
+    let allCards=document.querySelectorAll('.card');
+    allCards[index].style.display='none';
+}
+
+function showCard(index){
+    let allCards=document.querySelectorAll('.card');
+    allCards[index].style.display='';
+}
+
+function resetCard() {
+    let allCards=document.querySelectorAll('.card');
+    for (let i=0; i<NUMBER_OF_EMPLOYEES; i++){
+        allCards[i].style.display='';
+    }
+}
+
 /**
  * showEmployee takes index number and Ajax data as parameter
  * this method is used to generate modal window
@@ -72,9 +100,33 @@ function showEmployeeModal(index, data){
     // add event listener for button which close the modal window
     const closeButton=modalDiv.querySelector('#modal-close-btn');
     closeButton.addEventListener("click", ()=>{
-       const currentDiv=document.body.lastElementChild;
-       document.body.removeChild(currentDiv);
+        closeModal();//call the function to close the modal window
     });
+    //event listener for previous and next button
+    let previousButton=document.getElementById('modal-prev');
+    let nextButton=document.getElementById('modal-next');
+    //if the modal show the head of the employee list, the previous button is disabled
+    if (index <=0){
+        previousButton.disabled=true;
+    }
+    //if the modal shows the tail of the employee list, the next button is disabled
+    if (index>=NUMBER_OF_EMPLOYEES-1){
+        nextButton.disabled=true;
+    }
+    previousButton.addEventListener('click', function () {
+        closeModal();
+        previousButton.disabled=false;
+        nextButton.disabled=false;
+        showEmployeeModal(index-1, data);
+    });
+
+    nextButton.addEventListener('click', function () {
+        closeModal();
+        previousButton.disabled=false;
+        nextButton.disabled=false;
+        showEmployeeModal(index+1, data);
+    });
+
 }
 
 /**
@@ -103,5 +155,22 @@ function generateEmployee(data){
     cardDiv.forEach(item=>item.addEventListener('click',function () {
         showEmployeeModal(getIndex(item), data);//show the corresponding modal window
     }));
+    //add event listener for search button
+    const searchButton=document.getElementById('serach-submit');
+    searchButton.addEventListener('click',function (event) {
+        event.preventDefault();
+        resetCard();//reset div.card style before search
+        let searchInput=document.getElementById('search-input');
+        for (let i=0; i<NUMBER_OF_EMPLOYEES;i++){
+            if (data.results[i].name.first.includes(searchInput.value)
+                || data.results[i].name.last.includes(searchInput.value)){
+                console.log('There are matches');
+                showCard(i);
+            } else{
+                hideCard(i);
+            }
+        }
+
+    });
 }
 
